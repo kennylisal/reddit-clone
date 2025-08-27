@@ -7,17 +7,27 @@ CREATE TABLE Subreddits (
     subreddit_type ENUM('public', 'restricted', 'private') NOT NULL DEFAULT 'public'
 );
 
--- Users table: Stores redditor (user) details
-CREATE TABLE Users (
-    user_id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(255),
-    join_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    post_karma INTEGER NOT NULL DEFAULT 0,
-    comment_karma INTEGER NOT NULL DEFAULT 0
+-- Moderators table: Tracks subreddit moderators
+CREATE TABLE Moderators (
+    user_id INTEGER NOT NULL REFERENCES Users(user_id),
+    subreddit_id INTEGER NOT NULL REFERENCES Subreddits(subreddit_id),
+    PRIMARY KEY (user_id, subreddit_id)
 );
 
--- Posts table: Stores thread starter posts
+-- Approved_Users table: Tracks approved users for restricted/private subreddits
+CREATE TABLE Approved_Users (
+    user_id INTEGER NOT NULL REFERENCES Users(user_id),
+    subreddit_id INTEGER NOT NULL REFERENCES Subreddits(subreddit_id),
+    PRIMARY KEY (user_id, subreddit_id)
+);
+
+-- Subscriptions table: Tracks user subscriptions to subreddits
+CREATE TABLE Subscriptions (
+    user_id INTEGER NOT NULL REFERENCES Users(user_id),
+    subreddit_id INTEGER NOT NULL REFERENCES Subreddits(subreddit_id),
+    PRIMARY KEY (user_id, subreddit_id)
+);
+
 CREATE TABLE Posts (
     post_id SERIAL PRIMARY KEY,
     subreddit_id INTEGER NOT NULL REFERENCES Subreddits(subreddit_id),
@@ -33,6 +43,19 @@ CREATE TABLE Posts (
     locked BOOLEAN NOT NULL DEFAULT FALSE,
     deleted BOOLEAN NOT NULL DEFAULT FALSE
 );
+
+-- Users table: Stores redditor (user) details
+CREATE TABLE Users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255),
+    join_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    post_karma INTEGER NOT NULL DEFAULT 0,
+    comment_karma INTEGER NOT NULL DEFAULT 0
+);
+
+-- Posts table: Stores thread starter posts
+
 
 -- Comments table: Stores comments with hierarchical structure
 CREATE TABLE Comments (
@@ -62,19 +85,6 @@ CREATE TABLE Comment_Votes (
     PRIMARY KEY (comment_id, user_id)
 );
 
--- Subscriptions table: Tracks user subscriptions to subreddits
-CREATE TABLE Subscriptions (
-    user_id INTEGER NOT NULL REFERENCES Users(user_id),
-    subreddit_id INTEGER NOT NULL REFERENCES Subreddits(subreddit_id),
-    PRIMARY KEY (user_id, subreddit_id)
-);
-
--- Moderators table: Tracks subreddit moderators
-CREATE TABLE Moderators (
-    user_id INTEGER NOT NULL REFERENCES Users(user_id),
-    subreddit_id INTEGER NOT NULL REFERENCES Subreddits(subreddit_id),
-    PRIMARY KEY (user_id, subreddit_id)
-);
 
 -- Followers table: Tracks user-to-user following
 CREATE TABLE Followers (
@@ -83,12 +93,6 @@ CREATE TABLE Followers (
     PRIMARY KEY (follower_id, followee_id)
 );
 
--- Approved_Users table: Tracks approved users for restricted/private subreddits
-CREATE TABLE Approved_Users (
-    user_id INTEGER NOT NULL REFERENCES Users(user_id),
-    subreddit_id INTEGER NOT NULL REFERENCES Subreddits(subreddit_id),
-    PRIMARY KEY (user_id, subreddit_id)
-);
 
 -- Indexes for performance optimization
 CREATE INDEX idx_posts_subreddit_id ON Posts(subreddit_id);
