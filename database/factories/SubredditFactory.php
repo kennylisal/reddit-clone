@@ -17,7 +17,7 @@ class SubredditFactory extends Factory
     public function definition(): array
     {
          return [
-            'name' => fake()->sentences(3,true),
+            'name' => fake()->sentence(3,true),
             'description' => fake()->paragraph(2),
             'is_active' => true,
             'created_at' => fake()->dateTime('now')

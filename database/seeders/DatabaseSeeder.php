@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Post;
 use App\Models\Subreddit;
+use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,13 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+       User::factory(80)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        Subreddit::factory(30)->create();
+        Subreddit::factory(22)->create();
+        Post::factory(300)->create();
     }
 }
 
