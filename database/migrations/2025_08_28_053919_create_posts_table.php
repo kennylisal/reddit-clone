@@ -17,10 +17,13 @@ return new class extends Migration
             $table->text('content');
             $table->integer('comment_num')->default(0);
             $table->integer('like_num')->default(0);
-            $table->enum('status',['active','deleted','locked']);
-            $table->foreignId('subreddit_id')->constrained('subreddits','id')->onDelete('cascade');
+            $table->enum('status', ['active', 'deleted', 'locked']);
+            $table->foreignId('subreddit_id')->constrained('subreddits', 'id')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+            $table->enum('content_type', ['text', 'link', 'image']);
+            $table->string("slug")->unique();
+            $table->string('image')->nullable();
         });
     }
 

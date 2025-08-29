@@ -44,6 +44,13 @@ CREATE TABLE Posts (
     deleted BOOLEAN NOT NULL DEFAULT FALSE
 );
 
+CREATE TABLE Post_Likes(
+    id SERIAL PRIMARY KEY,
+    post_id INTEGER NOT NULL REFERENCES Posts(post_id),
+    user_id INTEGER NOT NULL REFERENCES Users(user_id),
+    creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Users table: Stores redditor (user) details
 CREATE TABLE Users (
     user_id SERIAL PRIMARY KEY,

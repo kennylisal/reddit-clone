@@ -16,8 +16,10 @@ return new class extends Migration
             $table->timestamps();
             $table->string("name");
             $table->text("description");
-            $table->enum("type",['public', 'restricted', 'private'])->default('public');
+            $table->enum("type", ['public', 'restricted', 'private'])->default('public');
             $table->boolean('is_active');
+            $table->string("slug")->unique();
+            $table->string('image')->nullable();
         });
     }
 

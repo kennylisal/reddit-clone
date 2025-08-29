@@ -18,13 +18,17 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $title = fake()->sentence(3);
+        $id = rand(1, 300);
         return [
-            'title' => fake()->sentence(3),
-            'content' => fake()->paragraphs(3,true),
+            'title' => $title,
+            'content' => fake()->paragraphs(3, true),
             'status' => 'active',
             'subreddit_id' => Subreddit::inRandomOrder()->first()->id,
-            'user_id'=> User::inRandomOrder()->first()->id,
-            'created_at' => fake()->dateTimeBetween('-30 days','now')
+            'user_id' => User::inRandomOrder()->first()->id,
+            'created_at' => fake()->dateTimeBetween('-30 days', 'now'),
+            'slug' => \Illuminate\Support\Str::slug($title),
+            'image' => 'https://picsum.photos/id/' . $id . '/1080/720'
         ];
     }
 }

@@ -52,7 +52,7 @@ class User extends Authenticatable
     }
 
     public function subreddits(){
-        return $this->hasMany(Subreddit::class);
+        return $this->hasMany(Subscribe::class,'user_id');
     }
 
 
